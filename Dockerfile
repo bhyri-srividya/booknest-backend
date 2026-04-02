@@ -1,11 +1,14 @@
-# Use Java 17 base image
+# Use Java 17
 FROM eclipse-temurin:17-jdk-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy jar file (make sure jar is built)
-COPY target/*.jar app.jar
+# Copy project files
+COPY . .
 
-# Run the application
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+# Build the project
+RUN ./mvnw clean package -DskipTests
+
+# Run the jar
+CMD ["java", "-jar", "target/*.jar"]
